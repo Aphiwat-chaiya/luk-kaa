@@ -68,94 +68,93 @@ class HomePageState extends State<HomePage> {
         default:
           return Stack(
             children: [
+              // Background image
               Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/pumpwallpaper.png'), // ใช้ชื่อไฟล์ภาพ
-                    fit: BoxFit.cover, // ปรับภาพให้เต็มพื้นที่
+                    image: AssetImage('assets/pumpwallpaper.png'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      Colors.black38, // Darken the background image slightly
+                      BlendMode.darken,
+                    ),
                   ),
                 ),
               ),
+              // Customer info
               Positioned(
-                top: 20,
+                top: 30, // Adjusted top position
                 left: 20,
+                right: 20,
                 child: Container(
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.green.withOpacity(0.85),
+                    borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.5),
-                        blurRadius: 5,
-                        offset: const Offset(0, 2),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${widget.customer['first_name']} ${widget.customer['last_name']}',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
+                      Text(
+                        '${widget.customer['first_name']} ${widget.customer['last_name']}',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        'เลขสมาชิกสหกรณ์ : ${widget.customer['customer_id']}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                        ),
+                      ),
+                      Text(
+                        'เบอร์ : ${widget.customer['phone_number']}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                        ),
+                      ),
+                      const SizedBox(height: 10), // Add spacing
+                      // Points balance (ใต้ข้อมูลลูกค้า)
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: Colors.green[700], // ใช้สีเขียวที่เข้มกว่า
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'แต้มสะสม: ${widget.customer['points_balance']} แต้ม',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
-                              Text(
-                                'Customer ID: ${widget.customer['customer_id']}',
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ),
-              Positioned(
-                bottom: 30,
-                left: 20,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.phone, size: 30, color: Colors.white),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Phone: ${widget.customer['phone_number']}',
-                          style: const TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        const Icon(Icons.star, size: 30, color: Color.fromARGB(255, 166, 27, 27)),
-                        const SizedBox(width: 10),
-                        Text(
-                          'แต้มสะสมของคุณ : ${widget.customer['points_balance']}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
                 ),
               ),
             ],

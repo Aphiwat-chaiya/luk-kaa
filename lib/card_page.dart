@@ -26,7 +26,7 @@ class CardPage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                elevation: 8,
+                elevation: 10,
                 child: Container(
                   width: 400,
                   height: 250,
@@ -43,6 +43,13 @@ class CardPage extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                   child: Stack(
                     children: [
@@ -102,7 +109,7 @@ class CardPage extends StatelessWidget {
                         bottom: 0,
                         right: 0,
                         child: Container(
-                          padding: const EdgeInsets.all(2.0),
+                          padding: const EdgeInsets.all(4.0), // เพิ่มความชัดของขอบ
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -121,14 +128,14 @@ class CardPage extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 16), // เพิ่มระยะห่างระหว่างการ์ดและข้อความ
+              const SizedBox(height: 20), // เพิ่มระยะห่างระหว่างการ์ดและข้อความ
               const Text(
-                '* แสดงบัตรสมาชิกนี้ต่อพนักงานมื่อทำรายการเติมน้ำมัน เพื่อรับแต้มสะสม * ',
+                '* แสดงบัตรสมาชิกนี้ต่อพนักงานมื่อทำรายการเติมน้ำมัน เพื่อรับแต้มสะสม *',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black54,
                 ),
-                textAlign: TextAlign.center, // ย้ายมาที่นี่
+                textAlign: TextAlign.center,
               ),
             ],
           ),

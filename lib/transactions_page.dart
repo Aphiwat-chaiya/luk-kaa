@@ -120,6 +120,7 @@ class TransactionsPageState extends State<TransactionsPage> {
               'points_used': r['points_used'],
               'transaction_id': null,
             })));
+            
 
     mergedList.sort((a, b) =>
         DateTime.parse(b['transaction_date'] ?? b['redemption_date']).compareTo(
@@ -178,7 +179,14 @@ class TransactionsPageState extends State<TransactionsPage> {
                     child: Container(
                       padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        color: Colors.green[700], // สีพื้นหลังเขียวเข้ม
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.green[800]!,
+                            Colors.green[600]!,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
@@ -191,13 +199,19 @@ class TransactionsPageState extends State<TransactionsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'คะแนนสะสมทั้งหมด',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                              color: Colors.white,
-                            ),
+                          Row(
+                            children: [
+                              Icon(Icons.star, color: Colors.yellow[300]), // ไอคอนคะแนน
+                              const SizedBox(width: 8.0),
+                              const Text(
+                                'แต้มสะสมทั้งหมด',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 8.0),
                           Text(
@@ -217,7 +231,14 @@ class TransactionsPageState extends State<TransactionsPage> {
                     child: Container(
                       padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        color: Colors.green[700], // สีพื้นหลังเขียวเข้ม
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.green[800]!,
+                            Colors.green[600]!,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
@@ -230,17 +251,23 @@ class TransactionsPageState extends State<TransactionsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'ปันผลทั้งหมด',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                              color: Colors.white,
-                            ),
+                          const Row(
+                            children: [
+                              Icon(Icons.money, color: Colors.orangeAccent), // ไอคอนเงิน
+                              SizedBox(width: 8.0),
+                              Text(
+                                'ปันผล(บาท)',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 8.0),
                           Text(
-                            '฿${_totalDividend.toStringAsFixed(2)}',
+                            _totalDividend.toStringAsFixed(2),
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
@@ -261,41 +288,24 @@ class TransactionsPageState extends State<TransactionsPage> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                if (mergedItems.isEmpty) {
-                  return const Center(child: Text('ไม่มีข้อมูลรายการ'));
-                }
-
                 final item = mergedItems[index];
-                final isTransaction = item['type'] == 'transaction';
-                final title = isTransaction
-                    ? 'เติมน้ำมัน (${item['fuel_type_name']})'
-                    : 'แลกของรางวัล (${item['reward_name']})';
-                final date = isTransaction
-                    ? _formatDateTime(item['transaction_date'])
-                    : _formatDateTime(item['redemption_date']);
-                final points = isTransaction
-                    ? '+ ${item['points_earned']}'
-                    : '- ${item['points_used']}';
-                final titleColor = isTransaction ? Colors.green : Colors.red;
-
                 return Card(
                   margin: const EdgeInsets.symmetric(
-                      horizontal: 8.0, vertical: 4.0),
+                      vertical: 8.0, horizontal: 16.0),
                   child: ListTile(
-                    title: Text(
-                      title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: titleColor,
-                      ),
-                    ),
-                    subtitle: Text(date),
-                    trailing: Text(
-                      points,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: titleColor,
-                      ),
+                    title: item['type'] == 'transaction'
+                        ? Text('ธุรกรรม: ${item['fuel_type_name']}')
+                        : Text('รางวัล: ${item['reward_name']}'),
+                    subtitle: Text(item['type'] == 'transaction'
+                        ? 'วันที่: ${_formatDateTime(item['transaction_date'])} - แต้มที่ได้: ${item['points_earned']}'
+                        : 'วันที่: ${_formatDateTime(item['redemption_date'])} - แต้มที่ใช้: ${item['points_used']}'),
+                    trailing: Icon(
+                      item['type'] == 'transaction'
+                          ? Icons.local_gas_station
+                          : Icons.redeem,
+                      color: item['type'] == 'transaction'
+                          ? Colors.green
+                          : Colors.red,
                     ),
                   ),
                 );
