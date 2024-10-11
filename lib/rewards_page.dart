@@ -94,11 +94,8 @@ class RewardsPageState extends State<RewardsPage> {
                 data['points_balance']; // อัปเดตแต้มทั้งหมด
           });
         }
-      } else {
-        if (mounted) {
-          showErrorSnackBar('ไม่สามารถดึงข้อมูลลูกค้าได้');
-        }
       }
+      // ลบข้อความไม่สามารถดึงข้อมูลลูกค้าได้
     } catch (e) {
       if (mounted) {
         showErrorSnackBar('เกิดข้อผิดพลาด: $e');
@@ -203,15 +200,27 @@ class RewardsPageState extends State<RewardsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('รางวัลที่แลก',
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          title: const Text(
+            'รางวัลที่แลก',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+              color: Colors.green, // เพิ่มสีเขียวให้หัวข้อ
+            ),
+          ),
           content: redeemedRewards.isEmpty
-              ? const Text('คุณยังไม่ได้แลกรางวัลใดๆ')
+              ? const Text(
+                  'คุณยังไม่ได้แลกรางวัลใดๆ',
+                  style: TextStyle(fontSize: 18), // เพิ่มขนาดตัวอักษร
+                )
               : SizedBox(
                   width: double.maxFinite,
                   child: ListView.separated(
                     itemCount: redeemedRewards.length,
-                    separatorBuilder: (context, index) => const Divider(),
+                    separatorBuilder: (context, index) => const Divider(
+                      color: Colors.grey, // สีของเส้นคั่น
+                      thickness: 1.0, // ความหนาของเส้นคั่น
+                    ),
                     itemBuilder: (context, index) {
                       final redeemedReward = redeemedRewards[index];
                       final DateTime redemptionDate =
@@ -222,21 +231,62 @@ class RewardsPageState extends State<RewardsPage> {
                           DateFormat('dd/MM/yyyy HH:mm').format(redemptionDate);
 
                       return Card(
-                        elevation: 2,
-                        margin: const EdgeInsets.only(bottom: 8.0),
+                        elevation: 4, // เพิ่มเงาให้การ์ด
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10), // มุมโค้งมน
+                        ),
+                        color: Colors.white, // สีพื้นหลังของการ์ด
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 4.0),
                         child: ListTile(
-                          leading: const Icon(Icons.star,
-                              color: Colors.yellow), // ใช้ icon
-                          title: Text(redeemedReward['reward_name'],
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(redeemedReward['description']),
-                              Text('เวลา: $formattedDate'),
-                              Text('สถานะ: ${redeemedReward['status']}'),
-                            ],
+                          leading: const Icon(
+                            Icons.card_giftcard,
+                            color: Colors.orange, // เปลี่ยนสีไอคอน
+                            size: 40, // ขนาดไอคอน
+                          ),
+                          title: Text(
+                            redeemedReward['reward_name'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18, // เพิ่มขนาดตัวอักษรหัวข้อ
+                              color: Colors.black87, // สีข้อความหัวข้อ
+                            ),
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'ID: ${redeemedReward['redemption_id']}',
+                                  style: const TextStyle(
+                                    color: Colors.blueGrey, // สีข้อความ ID
+                                    fontSize: 14,
+                                    fontStyle:
+                                        FontStyle.italic, // เพิ่มสไตล์ตัวเอียง
+                                  ),
+                                ),
+                                const SizedBox(
+                                    height: 4), // ระยะห่างระหว่างบรรทัด
+                                Text(redeemedReward['description']),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'เวลา: $formattedDate',
+                                  style: const TextStyle(
+                                    color: Colors.green, // สีข้อความเวลา
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'สถานะ: ${redeemedReward['status']}',
+                                  style: TextStyle(
+                                    color: redeemedReward['status'] == 'สำเร็จ'
+                                        ? Colors.green // สีเขียวถ้าสำเร็จ
+                                        : Colors.red, // สีแดงถ้าล้มเหลว
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -245,7 +295,13 @@ class RewardsPageState extends State<RewardsPage> {
                 ),
           actions: <Widget>[
             TextButton(
-              child: const Text('ปิด'),
+              child: const Text(
+                'ปิด',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.green, // สีปุ่มปิด
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

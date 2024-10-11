@@ -63,66 +63,87 @@ class HomePageState extends State<HomePage> {
           return CardPage(customer: widget.customer);
         case 3:
           return RewardsPage(customer: widget.customer);
-        case 4: 
+        case 4:
           return AdditionalPage(customer: widget.customer);
         default:
-          return Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/pumpwallpaper.png'), // ใช้ชื่อไฟล์ภาพ
-                fit: BoxFit.cover, // ปรับภาพให้เต็มพื้นที่
+          return Stack(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/pumpwallpaper.png'), // ใช้ชื่อไฟล์ภาพ
+                    fit: BoxFit.cover, // ปรับภาพให้เต็มพื้นที่
+                  ),
+                ),
               ),
-            ),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              Positioned(
+                top: 20,
+                left: 20,
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        blurRadius: 5,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${widget.customer['first_name']} ${widget.customer['last_name']}',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                'Customer ID: ${widget.customer['customer_id']}',
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 30,
+                left: 20,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      children: [
-                        const Icon(Icons.person, size: 50, color: Colors.white),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${widget.customer['first_name']} ${widget.customer['last_name']}',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              'Customer ID: ${widget.customer['customer_id']}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.white70,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
                     Row(
                       children: [
                         const Icon(Icons.phone, size: 30, color: Colors.white),
                         const SizedBox(width: 10),
                         Text(
                           'Phone: ${widget.customer['phone_number']}',
-                          style: const TextStyle(
-                              fontSize: 18, color: Colors.white),
+                          style: const TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ],
                     ),
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        const Icon(Icons.star,
-                            size: 30, color: Color.fromARGB(255, 166, 27, 27)),
+                        const Icon(Icons.star, size: 30, color: Color.fromARGB(255, 166, 27, 27)),
                         const SizedBox(width: 10),
                         Text(
                           'แต้มสะสมของคุณ : ${widget.customer['points_balance']}',
@@ -137,7 +158,7 @@ class HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-            ),
+            ],
           );
       }
     }
